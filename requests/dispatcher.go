@@ -57,8 +57,11 @@ func CreateDispatcher() *Dispatcher {
 func makeClient() {
 	useKeepAlive := service.Args.Ka
 	transport := &http.Transport{
-		DisableCompression: false,
-		DisableKeepAlives:  !useKeepAlive,
+		DisableCompression:  false,
+		DisableKeepAlives:   !useKeepAlive,
+		MaxIdleConnsPerHost: 50,
+		MaxConnsPerHost:     100,
+		IdleConnTimeout:     90 * time.Second,
 	}
 	HttpClient = &http.Client{Transport: transport}
 }
